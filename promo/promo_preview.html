@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Olivia 安可 4.0 · 宣传片预览</title>
+<style>
+  :root{--bg:#0E0E12;--gold:#E8B14C;--text:#E8E8EA;--sub:#8A8A92}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px}
+  h1{font-size:20px;font-weight:600;letter-spacing:.5px}
+  h1 span{color:var(--gold)}
+  .sub{color:var(--sub);font-size:13px}
+  .stage{position:relative;width:min(92vw,960px);aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
+  .stage video.active{opacity:1}
+  .badge{position:absolute;left:18px;bottom:16px;z-index:5;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);
+    padding:8px 14px;border-radius:10px;font-size:13px}
+  .badge b{color:var(--gold)}
+  .controls{display:flex;gap:10px;align-items:center}
+  button{font:inherit;background:var(--gold);color:#1a1a1a;border:0;padding:9px 18px;border-radius:999px;cursor:pointer;font-weight:600}
+  button.ghost{background:transparent;color:var(--text);border:1px solid #333}
+  .hint{color:var(--sub);font-size:12px;max-width:660px;text-align:center;line-height:1.6}
+  a{color:var(--gold)}
+</style>
+</head>
+<body>
+  <h1>Olivia 安可 4.0 <span>· 宣传片预览</span></h1>
+  <p class="sub">三段真实界面动效 · 交叉淡入淡出循环播放</p>
+  <div class="stage">
+    <video src="Cinematic_slow_push_in_zoom_on_2026-08-31T15-53-54.mp4" muted playsinline class="active"></video>
+    <video src="Slow_gentle_pan_across_a_lette_2026-08-31T15-54-00.mp4" muted playsinline></video>
+    <video src="Smooth_slow_zoom_in_on_an_app__2026-08-31T15-54-04.mp4" muted playsinline></video>
+    <div class="badge">数据加密 · 本地信件导入 · API 切换</div>
+  </div>
+  <div class="controls">
+    <button id="play">⏸ 暂停</button>
+    <button id="restart" class="ghost">↻ 重播</button>
+  </div>
+  <p class="hint">浏览器预览仅供查看连续效果。正式发布请用剪映 / 必剪 或 ffmpeg 把 3 段 MP4 拼接，并叠加中文卖点字幕与背景音乐（见同目录 README.md）。</p>
+<script>
+  const vids=[...document.querySelectorAll('.stage video')];
+  let cur=0, playing=true;
+  vids.forEach(v=>{v.muted=true;});
+  function show(i){vids.forEach((v,k)=>v.classList.toggle('active',k===i));}
+  async function playAt(i){cur=i;show(i);try{await vids[i].play();}catch(e){}}
+  vids.forEach((v,i)=>v.addEventListener('ended',()=>{playAt((i+1)%vids.length);}));
+  document.getElementById('play').onclick=()=>{
+    playing=!playing;
+    if(playing){vids[cur].play();document.getElementById('play').textContent='⏸ 暂停';}
+    else{vids[cur].pause();document.getElementById('play').textContent='▶ 播放';}
+  };
+  document.getElementById('restart').onclick=()=>playAt(0);
+  vids[0].play().catch(()=>{});
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "pub get",
+      "type": "shell",
+      "command": "flutter pub get",
+      "options": {
+        "env": {
+          "PUB_HOSTED_URL": "https://pub.flutter-io.cn",
+          "FLUTTER_STORAGE_BASE_URL": "https://storage.flutter-io.cn"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "clean",
+      "type": "shell",
+      "command": "flutter clean",
+      "problemMatcher": []
+    },
+    {
+      "label": "build windows",
+      "type": "shell",
+      "command": "flutter build windows --release",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": ["pub get"],
+      "dependsOrder": "sequence",
+      "options": {
+        "env": {
+          "PUB_HOSTED_URL": "https://pub.flutter-io.cn",
+          "FLUTTER_STORAGE_BASE_URL": "https://storage.flutter-io.cn"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "rebuild windows (clean)",
+      "type": "shell",
+      "command": "flutter build windows --release",
+      "dependsOn": ["clean", "pub get"],
+      "dependsOrder": "sequence",
+      "options": {
+        "env": {
+          "PUB_HOSTED_URL": "https://pub.flutter-io.cn",
+          "FLUTTER_STORAGE_BASE_URL": "https://storage.flutter-io.cn"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build installer (msix)",
+      "type": "shell",
+      "command": "flutter pub run msix:create",
+      "dependsOn": ["build windows"],
+      "dependsOrder": "sequence",
+      "options": {
+        "env": {
+          "PUB_HOSTED_URL": "https://pub.flutter-io.cn",
+          "FLUTTER_STORAGE_BASE_URL": "https://storage.flutter-io.cn"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build installer (nsis)",
+      "type": "shell",
+      "command": "makensis packaging/installer.nsi",
+      "dependsOn": ["build windows"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "setup environment",
+      "type": "shell",
+      "command": "flutter config --enable-windows-desktop && flutter doctor",
+      "problemMatcher": []
+    }
+  ]
+}

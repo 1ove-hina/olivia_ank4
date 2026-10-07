@@ -1,0 +1,47 @@
+name: olivia_ank4
+description: Olivia-安可 4.0 写信 AI 桌面客户端（首版：写信纵切）
+publish_to: 'none'
+version: 4.0.3+20080205   # 规范版本号（pubspec 须为三段式 semver：4.0.3）+ 内部构建号 20080205（显示为 2008.2.5）；须与 app_info.version 一致，msix_version/installer VERSION 取 4.0.3.0（Windows 四段）
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  encrypt: ^5.0.0
+  path_provider: ^2.1.0
+  crypto: ^3.0.0
+  http: ^1.1.0
+  window_manager: ^0.4.2
+  flutter_secure_storage: ^9.2.2
+  file_selector: ^1.0.3
+  path: ^1.9.0
+  just_audio: ^0.9.0
+  just_audio_windows: ^0.2.3
+  tray_manager: ^0.5.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  msix: ^3.16.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/personas/
+    - assets/backgrounds/
+    - assets/logo/logo.png
+
+msix_config:
+  display_name: Olivia 安可 4.0
+  publisher_display_name: Olivia
+  identity_name: OliviaAnk4
+  msix_version: 4.0.3.0           # 对应规范版本 4.0.3 的 Windows 四段式（4.0.3 + .0 修订号），须与 installer.nsi VERSION 一致
+  logo_path: assets/logo/logo.png
+  # capabilities 必须是逗号分隔的字符串，不能写成 YAML 列表，否则 msix:create 报类型错误
+  capabilities: internetClient             # 写信需调用远端 API
+  languages: zh-CN
